@@ -2,12 +2,14 @@
 
 ## Directory
 - atom: Smart Contracts
+- frontend: Frontend UI for Smart Contract
 - js_tests: JS Tests
 - c++_tests: C++ Tests (optional, have to manually build EOSIO)
 
 ## Install
 <details>
   <summary>Mac OS X</summary>
+
 ```
 brew tap eosio/eosio
 brew tap eosio/eosio.cdt
