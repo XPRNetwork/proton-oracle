@@ -1,8 +1,9 @@
 import { ConnectWallet } from '@protonprotocol/proton-web-sdk'
+import { Api, JsonRpc } from '@protonprotocol/protonjs'
+import { requestAccount, endpoints, appName } from '@/constants'
 
-const requestAccount = 'protonres'
-const endpoints = ['https://proton.greymass.com']
-const appName = 'Proton Resources'
+export const rpc = new JsonRpc(endpoints)
+export const api = new Api({ rpc })
 
 let wallet = {
   link: undefined,
@@ -12,7 +13,7 @@ let wallet = {
 export const login = async ({ restoreSession } = { restoreSession: false }) => {
   const connectedWallet = await ConnectWallet({
     linkOptions: {
-      endpoints,
+      rpc,
       restoreSession
     },
     transportOptions: {
@@ -30,10 +31,7 @@ export const login = async ({ restoreSession } = { restoreSession: false }) => {
 
 export const transact = async (actions, broadcast) => {
   if (!wallet.session) {
-    await login()
-    if (!wallet.session) {
-      throw new Error('Could not find user')
-    }
+    throw new Error('Could not find user')
   }
 
   return wallet.session.transact({

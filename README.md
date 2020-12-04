@@ -1,4 +1,4 @@
-# Atom Boilerplate for Proton Blockchain
+# Proton Boilerplate
 
 ## Directory
 - atom: Smart Contracts
@@ -69,7 +69,7 @@
 <details>
   <summary>Ubuntu 16.04/18.04</summary>
   <p>
-  
+
     sudo apt remove eosio
     sudo apt remove eosio.cdt
   </p>

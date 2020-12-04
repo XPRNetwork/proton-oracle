@@ -1,9 +1,17 @@
 #include <atom/atom.hpp>
 
 namespace proton {
-  void atom::transfer (const eosio::name& from, const eosio::name& to, const eosio::asset& quantity, const std::string& memo) {
+  void atom::ontransfer (const eosio::name& from, const eosio::name& to, const eosio::asset& quantity, const std::string& memo) {
+    // Process action
+    process(10);
+
     // Skip if outgoing
     if (from == get_self()) {
+      return;
+    }
+
+    // Skip if deposit memo
+    if (memo == "deposit") {
       return;
     }
 
@@ -13,9 +21,22 @@ namespace proton {
     }
 
     // Validate transfer
-    bool valid_symbol = quantity.symbol == TOKEN_SYMBOL;
-    bool valid_contract = get_first_receiver() == TOKEN_CONTRACT;
-    bool valid_to = to == get_self();
-    eosio::check(valid_symbol && valid_contract && valid_to, "Invalid Deposit");
+    eosio::check(to == get_self(), "Invalid Deposit");
+
+    // Deposit
+    eosio::name token_contract = get_first_receiver();
+    auto balance_to_add = eosio::extended_asset(quantity, token_contract);
+    add_balance(from, balance_to_add);
+  }
+
+  void atom::withdraw (const eosio::name& account, const eosio::extended_asset& balance) {
+    require_auth(account);
+    substract_balance(account, balance);
+    transfer_to(account, balance, "");
+  }
+
+  void atom::transfer_to(const eosio::name& to, const eosio::extended_asset& balance, const std::string& memo) {
+    transfer_action t_action( balance.contract, {get_self(), "active"_n} );
+    t_action.send(get_self(), to, balance.quantity, memo);
   }
 }
