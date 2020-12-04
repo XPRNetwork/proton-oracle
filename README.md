@@ -1,5 +1,10 @@
 # Proton Boilerplate
 
+## Start
+```
+git clone https://github.com/jafri/proton-boilerplate proton-app
+```
+
 ## Directory
 - atom: Smart Contracts
 - frontend: Frontend UI for Smart Contract
