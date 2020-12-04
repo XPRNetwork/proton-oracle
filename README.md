@@ -84,6 +84,7 @@ git clone https://github.com/jafri/proton-boilerplate proton-app
 <details>
   <summary>RPM-based (CentOS, Amazon Linux, etc.)</summary>
   <p>
+  
     sudo yum remove eosio
     sudo yum remove eosio.cdt
   </p>
