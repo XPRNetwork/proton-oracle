@@ -7,8 +7,7 @@ find_package(eosio.cdt)
 
 add_contract(atom atom
    ${CMAKE_CURRENT_SOURCE_DIR}/src/atom.cpp
-   ${CMAKE_CURRENT_SOURCE_DIR}/src/transfer.cpp
-   ${CMAKE_CURRENT_SOURCE_DIR}/src/balance.cpp
+   ${CMAKE_CURRENT_SOURCE_DIR}/src/aggregate.cpp
 )
 
 target_include_directories(atom

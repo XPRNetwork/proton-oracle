@@ -1,55 +1,33 @@
 #pragma once
 
 namespace proton {
-  /**
-   * ACCOUNT
-   */
-  struct [[eosio::table, eosio::contract("atom")]] Account {
-    eosio::name account;
-    std::map<eosio::extended_symbol, eosio::asset> balances;
+  struct ProviderPoint {
+    eosio::name provider;
+    data_variant data;
+    eosio::time_point time;
 
-    uint64_t primary_key() const { return account.value; };
-    bool empty() const { return balances.empty(); };
+    EOSLIB_SERIALIZE( ProviderPoint, (provider)(data)(time) )
   };
-  typedef eosio::multi_index<"accounts"_n, Account> account_table;
 
-  /**
-   * Plans
-   */
-  struct PlanBase {
-    eosio::asset cpu_credits;
-    eosio::asset net_credits;
-    uint32_t ram_bytes;
-    eosio::extended_asset price;
-  };
-  struct [[eosio::table, eosio::contract("atom")]] Plan: public PlanBase {
+  struct [[eosio::table, eosio::contract("atom")]] Feed {
     uint64_t index;
-    uint64_t plan_days;
-    uint32_t max_quantity;
-
     std::string name;
     std::string description;
-    std::vector<std::string> included;
+    std::string aggregate_function;
+    uint8_t data_type_index = 0;
+    uint8_t data_window_size = 1;
+    uint64_t min_provider_wait_sec = 0;
+    std::map<eosio::name, eosio::time_point> providers;
+    data_variant aggregate;
+    std::vector<ProviderPoint> points;
 
     uint64_t primary_key() const { return index; };
-  };
-  typedef eosio::multi_index<"plans"_n, Plan> plan_table;
 
-  /**
-   * TERM
-   */
-  struct [[eosio::table, eosio::contract("atom")]] Term: public PlanBase {
-    eosio::name account;
-    uint64_t term_days;
-    eosio::time_point start_time = eosio::current_time_point();
-
-    uint64_t primary_key() const { return account.value; };
-    eosio::time_point end_time()const { return start_time + eosio::time_point(eosio::seconds(SECONDS_IN_DAY * term_days)); };
-    bool is_active() const { return end_time() > start_time; };
-    uint64_t by_time()const { return is_active() ? end_time().elapsed.count() : std::numeric_limits<uint64_t>::max(); }
-    uint64_t days_left()const { return (end_time().sec_since_epoch() - eosio::current_time_point().sec_since_epoch()) / SECONDS_IN_DAY; };
+    EOSLIB_SERIALIZE( Feed, (index)(name)
+                            (description)(aggregate_function)
+                            (data_type_index)(data_window_size)
+                            (min_provider_wait_sec)(providers)
+                            (aggregate)(points) )
   };
-  typedef eosio::multi_index<"terms"_n, Term,
-    eosio::indexed_by<"bytime"_n, eosio::const_mem_fun<Term, uint64_t, &Term::by_time>>
-  > term_table;
+  typedef eosio::multi_index<"feeds"_n, Feed> feeds_table;
 }
