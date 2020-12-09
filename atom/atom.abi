@@ -1,13 +1,26 @@
 {
     "____comment": "This file was generated with eosio-abigen. DO NOT EDIT ",
     "version": "eosio::abi/1.1",
-    "types": [
-        {
-            "new_type_name": "data_variant",
-            "type": "variant_string_uint64_float64"
-        }
-    ],
+    "types": [],
     "structs": [
+        {
+            "name": "Data",
+            "base": "",
+            "fields": [
+                {
+                    "name": "feed_index",
+                    "type": "uint64"
+                },
+                {
+                    "name": "aggregate",
+                    "type": "data_variant"
+                },
+                {
+                    "name": "points",
+                    "type": "ProviderPoint[]"
+                }
+            ]
+        },
         {
             "name": "Feed",
             "base": "",
@@ -29,28 +42,16 @@
                     "type": "string"
                 },
                 {
-                    "name": "data_type_index",
-                    "type": "uint8"
+                    "name": "data_type",
+                    "type": "string"
                 },
                 {
-                    "name": "data_window_size",
-                    "type": "uint8"
-                },
-                {
-                    "name": "min_provider_wait_sec",
-                    "type": "uint64"
+                    "name": "config",
+                    "type": "pair_string_uint64[]"
                 },
                 {
                     "name": "providers",
                     "type": "pair_name_time_point[]"
-                },
-                {
-                    "name": "aggregate",
-                    "type": "data_variant"
-                },
-                {
-                    "name": "points",
-                    "type": "ProviderPoint[]"
                 }
             ]
         },
@@ -63,12 +64,12 @@
                     "type": "name"
                 },
                 {
-                    "name": "data",
-                    "type": "data_variant"
-                },
-                {
                     "name": "time",
                     "type": "time_point"
+                },
+                {
+                    "name": "data",
+                    "type": "data_variant"
                 }
             ]
         },
@@ -89,16 +90,12 @@
                     "type": "string"
                 },
                 {
-                    "name": "data_type_index",
-                    "type": "uint8"
+                    "name": "data_type",
+                    "type": "string"
                 },
                 {
-                    "name": "data_window_size",
-                    "type": "uint8"
-                },
-                {
-                    "name": "min_provider_wait_sec",
-                    "type": "uint64"
+                    "name": "config",
+                    "type": "pair_string_uint64[]"
                 },
                 {
                     "name": "providers",
@@ -110,6 +107,24 @@
             "name": "cleanup",
             "base": "",
             "fields": []
+        },
+        {
+            "name": "data_variant",
+            "base": "",
+            "fields": [
+                {
+                    "name": "d_string",
+                    "type": "string?"
+                },
+                {
+                    "name": "d_uint64_t",
+                    "type": "uint64?"
+                },
+                {
+                    "name": "d_double",
+                    "type": "float64?"
+                }
+            ]
         },
         {
             "name": "feed",
@@ -144,6 +159,20 @@
             ]
         },
         {
+            "name": "pair_string_uint64",
+            "base": "",
+            "fields": [
+                {
+                    "name": "key",
+                    "type": "string"
+                },
+                {
+                    "name": "value",
+                    "type": "uint64"
+                }
+            ]
+        },
+        {
             "name": "removefeed",
             "base": "",
             "fields": [
@@ -158,8 +187,32 @@
             "base": "",
             "fields": [
                 {
-                    "name": "feed",
-                    "type": "Feed"
+                    "name": "feed_index",
+                    "type": "uint64"
+                },
+                {
+                    "name": "name",
+                    "type": "string"
+                },
+                {
+                    "name": "description",
+                    "type": "string"
+                },
+                {
+                    "name": "aggregate_function",
+                    "type": "string"
+                },
+                {
+                    "name": "data_type",
+                    "type": "string"
+                },
+                {
+                    "name": "config",
+                    "type": "pair_string_uint64[]"
+                },
+                {
+                    "name": "providers",
+                    "type": "name[]"
                 }
             ]
         }
@@ -193,6 +246,13 @@
     ],
     "tables": [
         {
+            "name": "data",
+            "type": "Data",
+            "index_type": "i64",
+            "key_names": [],
+            "key_types": []
+        },
+        {
             "name": "feeds",
             "type": "Feed",
             "index_type": "i64",
@@ -201,10 +261,5 @@
         }
     ],
     "ricardian_clauses": [],
-    "variants": [
-        {
-            "name": "variant_string_uint64_float64",
-            "types": ["string","uint64","float64"]
-        }
-    ]
+    "variants": []
 }

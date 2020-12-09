@@ -18,6 +18,7 @@ namespace proton
       return calculate_sd(points);
     } else {
       eosio::check(false, "aggregate function not set");
+      return {};
     }
   }
 
@@ -46,7 +47,7 @@ namespace proton
 
     // Add up total
     for (auto& item: data) {
-      total += std::get<double>(item.data);
+      total += item.data.get<double>();
     }
     mean = total / (double)data.size();
 
@@ -59,7 +60,7 @@ namespace proton
     std::vector<T> vec;
     for (auto& i: data) 
     {
-      vec.emplace_back(std::get<T>(i.data));
+      vec.emplace_back(i.data.get<T>());
     }
 
     if (vec.size() % 2 == 0) {
@@ -81,23 +82,24 @@ namespace proton
   }
 
   data_variant atom::calculate_median(const std::vector<ProviderPoint>& data) {
-    auto index = data.back().data.index();
-    if (index == 1) {
+    auto data_type = data.back().data.data_type();
+    if (data_type == "uint64_t") {
       return calculate_median_impl<uint64_t>(data);
-    } else if (index == 2) {
+    } else if (data_type == "double") {
       return calculate_median_impl<double>(data);
     } else {
       eosio::check(false, "unsupported median type");
+      return {};
     }
   }
 
   data_variant atom::calculate_sd(const std::vector<ProviderPoint>& data) {
     auto mean = calculate_mean(data);
-    double mean1 = std::get<double>(mean);
+    double mean1 = mean.get<double>();
 
     double total = 0;
     for (auto& i: data) {
-      total += std::pow(std::get<double>(i.data) - mean1, 2);
+      total += std::pow(i.data.get<double>() - mean1, 2);
     }
     double mean2 = total / (double)data.size();
     

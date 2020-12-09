@@ -22,19 +22,28 @@ namespace proton {
 
     atom( eosio::name receiver, eosio::name code, eosio::datastream<const char*> ds )
       : contract(receiver, code, ds),
-        _feeds(receiver, receiver.value) {}
+        _feeds(receiver, receiver.value),
+        _data(receiver, receiver.value) {}
 
     ACTION addfeed (
-      std::string name,
-      std::string description,
-      std::string aggregate_function,
-      uint8_t data_type_index,
-      uint8_t data_window_size,
-      uint64_t min_provider_wait_sec,
-      std::vector<eosio::name> providers
+      const std::string& name,
+      const std::string& description,
+      const std::string& aggregate_function,
+      const std::string& data_type,
+      const std::map<std::string, uint64_t>& config,
+      const std::vector<eosio::name>& providers
     );
-    ACTION updatefeed ( const Feed& feed                     );
-    ACTION removefeed ( const uint64_t& feed_index              );
+    ACTION updatefeed (
+      const uint64_t& feed_index,
+      const std::string& name,
+      const std::string& description,
+      const std::string& aggregate_function,
+      const std::string& data_type,
+      const std::map<std::string, uint64_t>& config,
+      const std::vector<eosio::name>& providers
+    );
+    ACTION removefeed ( const uint64_t& feed_index );
+    
     ACTION feed (
       const eosio::name& account,
       const uint64_t& feed_index,
@@ -49,6 +58,12 @@ namespace proton {
       while(db.begin() != itr){
         itr = db.erase(--itr);
       }
+
+      data_table db2(get_self(), get_self().value);
+      auto itr2 = db2.end();
+      while(db2.begin() != itr2){
+        itr2 = db2.erase(--itr2);
+      }
     }
 
     // Action wrappers
@@ -56,6 +71,7 @@ namespace proton {
 
     // Initialize tables from tables.hpp
     feeds_table _feeds;
+    data_table _data;
 
   private:
     void set_data(

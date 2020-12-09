@@ -1,34 +1,38 @@
-cleospt set contract test14 atom 
+cleospt set contract oracles atom 
 
-cleospt push action test14 cleanup '[]' -p test14 
+cleospt push action oracles cleanup '[]' -p oracles 
 
-cleospt push action test14 addfeed '{
-        "name": "Test",
-        "description": "Feed 1",
-        "aggregate_function": "sd",
-        "data_type_index": 2,
-        "data_window_size": 20,
-        "min_provider_wait_sec": 5,
-        "providers": ["test14"]
-}' -p test14;
+cleospt push action oracles addfeed '{
+        "name": "XPR/BTC",
+        "description": "Tracks real-time price of the XPR/BTC pair",
+        "aggregate_function": "mean",
+        "data_type": "double",
+        "config": [
+                { "key": "data_window_size", "value": 20 },
+                { "key": "min_provider_wait_sec", "value": 0 },
+                { "key": "data_freshness_sec", "value": 0 },
+                { "key": "data_same_provider_limit", "value": 0 }
+        ],
+        "providers": ["oracles", "bot1", "bot2", "bot3", "bot4"]
+}' -p oracles;
 
-cleospt push action test14 feed '{
-        "account": "test14",
+cleospt push action oracles updatefeed '{
         "feed_index": 0,
-        "data": ["float64", 1]
-}' -p test14;
-cleospt push action test14 feed '{
-        "account": "test14",
+        "name": "XPR/BTC",
+        "description": "Tracks real-time price of the XPR/BTC pair",
+        "aggregate_function": "mean",
+        "data_type": "double",
+        "config": [
+                { "key": "data_window_size", "value": 20 },
+                { "key": "min_provider_wait_sec", "value": 0 },
+                { "key": "data_freshness_sec", "value": 0 },
+                { "key": "data_same_provider_limit", "value": 0 }
+        ],
+        "providers": ["oracles", "bottest", "bot1"]
+}' -p oracles;
+
+cleospt push action oracles feed '{
+        "account": "oracles",
         "feed_index": 0,
-        "data": ["float64", 2]
-}' -p test14;
-cleospt push action test14 feed '{
-        "account": "test14",
-        "feed_index": 0,
-        "data": ["float64", 7]
-}' -p test14;
-cleospt push action test14 feed '{
-        "account": "test14",
-        "feed_index": 0,
-        "data": ["float64", 8]
-}' -p test14;
+        "data": ["float64", 0.00000048]
+}' -p oracles;

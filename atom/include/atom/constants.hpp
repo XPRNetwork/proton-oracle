@@ -17,15 +17,15 @@ namespace proton
     const std::string SD     = "sd";
   }
 
-  typedef std::variant<
-    std::string, // 0
-    uint64_t, // 1
-    double // 2
-  > data_variant;
+  // typedef std::variant<
+  //   std::string, // 0
+  //   uint64_t, // 1
+  //   double // 2
+  // > data_variant;
 
-  static std::map<size_t, std::vector<std::string>> type_index_to_aggregates = {
-    { 0, { Aggregates::MODE, Aggregates::LAST } },
-    { 1, { Aggregates::MODE, Aggregates::MEDIAN, Aggregates::LAST } },
-    { 2, { Aggregates::MODE, Aggregates::MEDIAN, Aggregates::MEAN, Aggregates::LAST, Aggregates::SD } },
+  static std::map<std::string, std::vector<std::string>> type_index_to_aggregates = {
+    { "string", { Aggregates::MODE, Aggregates::LAST } },
+    { "uint64_t", { Aggregates::MODE, Aggregates::MEDIAN, Aggregates::LAST } },
+    { "double", { Aggregates::MODE, Aggregates::MEDIAN, Aggregates::MEAN, Aggregates::LAST, Aggregates::SD } },
   };
 } // namespace proton
