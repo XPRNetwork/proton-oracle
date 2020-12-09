@@ -120,8 +120,11 @@ namespace proton
     bool check_freshness = data_freshness_sec != feed_itr->config.end() && data_freshness_sec->second > 0;
 
     while (
-      (check_window && points.size() > data_window_size->second) &&
-      (check_freshness && eosio::current_time_point().sec_since_epoch() - points.back().time.sec_since_epoch() > data_freshness_sec->second)
+      points.begin() != points.end() &&
+      (
+        (check_window && points.size() > data_window_size->second) ||
+        (check_freshness && eosio::current_time_point().sec_since_epoch() - points.back().time.sec_since_epoch() > data_freshness_sec->second)
+      )
     ) {
       points.pop_back();
     }
