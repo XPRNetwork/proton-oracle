@@ -4,6 +4,7 @@
 #include <vector>
 #include <algorithm>
 #include <cmath>
+#include <optional>
 
 // EOS
 #include <eosio/eosio.hpp>
@@ -23,9 +24,11 @@ namespace proton {
     atom( eosio::name receiver, eosio::name code, eosio::datastream<const char*> ds )
       : contract(receiver, code, ds),
         _feeds(receiver, receiver.value),
-        _data(receiver, receiver.value) {}
+        _data(receiver, receiver.value),
+        _msigs(receiver, receiver.value) {}
 
-    ACTION addfeed (
+    ACTION setfeed (
+      std::optional<uint64_t> index,
       const std::string& name,
       const std::string& description,
       const std::string& aggregate_function,
@@ -33,21 +36,29 @@ namespace proton {
       const std::map<std::string, uint64_t>& config,
       const std::vector<eosio::name>& providers
     );
-    ACTION updatefeed (
-      const uint64_t& feed_index,
-      const std::string& name,
-      const std::string& description,
-      const std::string& aggregate_function,
-      const std::string& data_type,
-      const std::map<std::string, uint64_t>& config,
-      const std::vector<eosio::name>& providers
-    );
-    ACTION removefeed ( const uint64_t& feed_index );
-    
+    ACTION removefeed ( const uint64_t& index );
+
     ACTION feed (
       const eosio::name& account,
       const uint64_t& feed_index,
       const data_variant& data
+    );
+
+    ACTION createmsig (
+      const eosio::name& proposer,
+      const Feed& feed
+    );
+    ACTION approvemsig (
+      const eosio::name& provider,
+      const uint64_t& msig_index,
+      const bool& approve
+    );
+    ACTION executemsig (
+      const uint64_t& msig_index
+    );
+    ACTION cancelmsig (
+      const eosio::name& proposer,
+      const uint64_t& msig_index
     );
 
     ACTION cleanup () {
@@ -67,19 +78,15 @@ namespace proton {
     }
 
     // Action wrappers
-    // using feed_action = eosio::action_wrapper<"withdraw"_n,     &atom::withdraw>;
+    using setfeed_action = eosio::action_wrapper<"setfeed"_n, &atom::setfeed>;
+    using feed_action = eosio::action_wrapper<"feed"_n, &atom::feed>;
 
     // Initialize tables from tables.hpp
     feeds_table _feeds;
     data_table _data;
+    msigs_table _msigs;
 
   private:
-    void set_data(
-      const eosio::name& creator,
-      const uint64_t& feed_index,
-      const data_variant& data
-    );
-
     data_variant aggregate (
       const std::string& aggregate_function,
       const std::vector<ProviderPoint>& points

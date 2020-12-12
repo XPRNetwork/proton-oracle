@@ -53,13 +53,6 @@ namespace proton {
     EOSLIB_SERIALIZE( ProviderPoint, (provider)(time)(data) )
   };
 
-  /**
-   * CONFIG:
-    uint64_t data_window_size = 20;
-    uint64_t data_same_provider_limit = 0;
-    uint64_t data_freshness_sec = 0;
-    uint64_t min_provider_wait_sec = 0;
-  */
   struct [[eosio::table, eosio::contract("atom")]] Feed {
     uint64_t index;
     std::string name;
@@ -88,4 +81,16 @@ namespace proton {
     EOSLIB_SERIALIZE( Data, (feed_index)(aggregate)(points) )
   };
   typedef eosio::multi_index<"data"_n, Data> data_table;
+
+  struct [[eosio::table, eosio::contract("atom")]] Msig {
+    uint64_t index;
+    eosio::name proposer;
+    Feed new_feed;
+    std::map<eosio::name, bool> approved_providers;
+
+    uint64_t primary_key() const { return index; };
+
+    EOSLIB_SERIALIZE( Msig, (index)(proposer)(new_feed)(approved_providers) )
+  };
+  typedef eosio::multi_index<"msigs"_n, Msig> msigs_table;
 }

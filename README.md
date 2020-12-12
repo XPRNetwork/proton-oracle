@@ -1,85 +1,217 @@
 # Proton Oracles
 
 ## Directory
-- atom: Smart Contracts
+- atom: Oracle Smart Contracts
 - js_tests: JS Tests
-- c++_tests: C++ Tests (optional, have to manually build EOSIO)
 
-## Install
-<details>
-  <summary>Mac OS X</summary>
-  <p>
+## Aggregate Function -> {supported types}
+"sd"     -> {double}  
 
-    brew tap eosio/eosio
-    brew tap eosio/eosio.cdt
+"mean"   -> {double}  
 
-    brew install eosio
-    brew install eosio.cdt
-  </p>
-</details>
+"median" -> {double, uint64_t}  
 
-<details>
-  <summary>Ubuntu 18.04</summary>
-  <p>
+"mode"   -> {double, uint64_t, string}  
 
-    wget https://github.com/eosio/eos/releases/download/v2.0.7/eosio_2.0.7-1-ubuntu-18.04_amd64.deb
-    sudo apt install ./eosio_2.0.7-1-ubuntu-18.04_amd64.deb
+"last"   -> {double, uint64_t, string}
 
-    wget https://github.com/eosio/eosio.cdt/releases/download/v1.7.0/eosio.cdt_1.7.0-1-ubuntu-18.04_amd64.deb
-    sudo apt install ./eosio.cdt_1.7.0-1-ubuntu-18.04_amd64.deb
-  </p>
-</details>
-<details>
-  <summary>Ubuntu 16.04</summary>
-  <p>
+## Feed Config  
+{uint64_t} data_window_size (min 1, max 250)  
 
-    wget https://github.com/eosio/eos/releases/download/v2.0.7/eosio_2.0.7-1-ubuntu-16.04_amd64.deb
-    sudo apt install ./eosio_2.0.7-1-ubuntu-16.04_amd64.deb
+{uint64_t} data_same_provider_limit (optional)  
 
-    wget https://github.com/eosio/eosio.cdt/releases/download/v1.7.0/eosio.cdt_1.7.0-1-ubuntu-16.04_amd64.deb
-    sudo apt install ./eosio.cdt_1.7.0-1-ubuntu-16.04_amd64.deb
-  </p>
-</details>
+{uint64_t} data_freshness_sec (optional)  
 
-<details>
-  <summary>RPM-based (CentOS, Amazon Linux, etc.)</summary>
-  <p>
+{uint64_t} min_provider_wait_sec (optional)
 
-    wget https://github.com/eosio/eos/releases/download/v2.0.7/eosio-2.0.7-1.el7.x86_64.rpm
-    sudo yum install ./eosio-2.0.7-1.el7.x86_64.rpm
+## Data types
+"string"   -> std::string  
 
-    wget https://github.com/eosio/eosio.cdt/releases/download/v1.7.0/eosio.cdt-1.7.0-1.el7.x86_64.rpm
-    sudo yum install ./eosio.cdt-1.7.0-1.el7.x86_64.rpm
-  </p>
-</details>
+"uint64_t" -> uint64_t  
+
+"double"   -> double  
+
+## ACTION `setfeed`
+
+Creates or replaces a feed
+
+- **authority**: `get_self()`
+
+### params
+
+- `{optional<uint64_t>} index` - (Optional) Index of the feed if updating
+- `{string} name` - name of feed
+- `{string} description` - description of feed
+- `{string} aggregate_function` - type of aggregate function
+- `{string} data_type` - flash loan fee
+- `{map<string, uint64_t>} config` - Feed config
+- `{vector<name>} providers` - All feed providers
 
 
-## Uninstall
+## ACTION `removefeed`
 
-<details>
-  <summary>Mac OS X</summary>
-  <p>
+Removes a feed
 
-    brew remove eosio
-    brew remove eosio.cdt
-  </p>
-</details>
+- **authority**: `get_self()`
 
-<details>
-  <summary>Ubuntu 16.04/18.04</summary>
-  <p>
+### params
 
-    sudo apt remove eosio
-    sudo apt remove eosio.cdt
-  </p>
-</details>
+- `{uint64_t} index` - Index of the feed to remove
 
 
-<details>
-  <summary>RPM-based (CentOS, Amazon Linux, etc.)</summary>
-  <p>
-  
-    sudo yum remove eosio
-    sudo yum remove eosio.cdt
-  </p>
-</details>
+## ACTION `feed`
+
+Feed data as a provider
+
+- **authority**: `account`
+
+### params
+
+- `{name} account` - Provider account
+- `{uint64_t} feed_index` - Index of the feed to provide data to
+- `{data_variant} data` - Data to provide
+
+
+## ACTION `createmsig`
+
+Create multisig
+
+- **authority**: `proposer`
+
+### params
+
+- `{name} propose` - Proposer account
+- `{Feed} feed` - New feed to propose
+
+
+## ACTION `approvemsig`
+
+Approve / reject multisig
+
+- **authority**: `provider`
+
+### params
+
+- `{name} provider` - Provider account
+- `{uint64_t} msig_index` - Index of the msig to approve
+- `{bool} approve` - `true` to approve / `false` to reject
+
+
+## ACTION `executemsig`
+
+execute multisig
+
+- **authority**: no authority needed
+
+### params
+
+- `{uint64_t} msig_index` - Index of the msig to execute
+
+
+
+## ACTION `cancelmsig`
+
+Cancel multisig
+
+- **authority**: `provider`
+
+### params
+
+- `{name} proposer` - Proposer account
+- `{uint64_t} msig_index` - Index of the msig to cancel
+
+
+## TABLE `feeds`
+
+- `{uint64_t} index` - index of the feed
+- `{string} name` - name of feed
+- `{string} description` - description of feed
+- `{string} aggregate_function` - type of aggregate function
+- `{string} data_type` - flash loan fee
+- `{map<string, uint64_t>} config` - Feed config
+- `{map<name, time_point>} providers` - Map of provider name to last time they provided data
+
+### example feeds row
+
+```json
+{
+  "index": 0,
+  "name": "XPR/BTC",
+  "description": "Oracle for real-time provision of XPR price against BTC",
+  "aggregate_function": "mean",
+  "data_type": "double",
+  "config": {
+    "data_window_size": 20,
+    "data_same_provider_limit": 5
+  },
+  "providers": {
+    "bot1": "1970-01-01T00:00:00.000",
+    "bot2": "1970-01-01T00:00:00.000",
+    "bot3": "1970-01-01T00:00:00.000"
+  }
+}
+```
+
+
+## TABLE `data`
+
+- `{uint64_t} feed_index` - index of the feed
+- `{data_variant} aggregate` - aggegrate data point
+- `{vector<ProviderPoint>} points` - vector of provider points
+
+### example data row
+
+```json
+{
+  "index": 0,
+  "aggregate": {
+    "d_string": null,
+    "d_uint64_t": null,
+    "d_double": "18293.82000000000334694"
+  }	,
+  "points": [
+    {
+      "provider": "bot4",
+      "time": "2020-12-12T02:04:37.500",
+      "data": {
+        "d_string": null,
+        "d_uint64_t": null,
+        "d_double": "18293.81999999999970896"
+      }
+    },
+  ]
+}
+```
+
+
+## TABLE `msigs`
+
+- `{uint64_t} index` - index of the msig
+- `{name} proposer` - aggegrate data point
+- `{Feed} new_feed` - vector of provider points
+- `{map<name, bool>} approved_providers` - Map of providers who have voted to their true/false vote
+
+### example msig row
+
+```json
+{
+  "index": 0,
+  "proposer": "bot1",
+  "new_feed": {
+    "index": 0,
+    "name": "XPR/BTC",
+    "description": "NEW DESCRIPTION",
+    "aggregate_function": "mean",
+    "data_type": "double",
+    "config": {
+      "data_window_size": 20,
+      "data_same_provider_limit": 5
+    },
+    "providers": ["bot1", "bot2", "bot3"]
+  },
+  "approved_providers": {
+    "bot1": true,
+    "bot2": false
+  }
+}
+```

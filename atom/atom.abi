@@ -56,6 +56,28 @@
             ]
         },
         {
+            "name": "Msig",
+            "base": "",
+            "fields": [
+                {
+                    "name": "index",
+                    "type": "uint64"
+                },
+                {
+                    "name": "proposer",
+                    "type": "name"
+                },
+                {
+                    "name": "new_feed",
+                    "type": "Feed"
+                },
+                {
+                    "name": "approved_providers",
+                    "type": "pair_name_bool[]"
+                }
+            ]
+        },
+        {
             "name": "ProviderPoint",
             "base": "",
             "fields": [
@@ -74,32 +96,34 @@
             ]
         },
         {
-            "name": "addfeed",
+            "name": "approvemsig",
             "base": "",
             "fields": [
                 {
-                    "name": "name",
-                    "type": "string"
+                    "name": "provider",
+                    "type": "name"
                 },
                 {
-                    "name": "description",
-                    "type": "string"
+                    "name": "msig_index",
+                    "type": "uint64"
                 },
                 {
-                    "name": "aggregate_function",
-                    "type": "string"
+                    "name": "approve",
+                    "type": "bool"
+                }
+            ]
+        },
+        {
+            "name": "cancelmsig",
+            "base": "",
+            "fields": [
+                {
+                    "name": "proposer",
+                    "type": "name"
                 },
                 {
-                    "name": "data_type",
-                    "type": "string"
-                },
-                {
-                    "name": "config",
-                    "type": "pair_string_uint64[]"
-                },
-                {
-                    "name": "providers",
-                    "type": "name[]"
+                    "name": "msig_index",
+                    "type": "uint64"
                 }
             ]
         },
@@ -107,6 +131,20 @@
             "name": "cleanup",
             "base": "",
             "fields": []
+        },
+        {
+            "name": "createmsig",
+            "base": "",
+            "fields": [
+                {
+                    "name": "proposer",
+                    "type": "name"
+                },
+                {
+                    "name": "feed",
+                    "type": "Feed"
+                }
+            ]
         },
         {
             "name": "data_variant",
@@ -127,6 +165,16 @@
             ]
         },
         {
+            "name": "executemsig",
+            "base": "",
+            "fields": [
+                {
+                    "name": "msig_index",
+                    "type": "uint64"
+                }
+            ]
+        },
+        {
             "name": "feed",
             "base": "",
             "fields": [
@@ -141,6 +189,20 @@
                 {
                     "name": "data",
                     "type": "data_variant"
+                }
+            ]
+        },
+        {
+            "name": "pair_name_bool",
+            "base": "",
+            "fields": [
+                {
+                    "name": "key",
+                    "type": "name"
+                },
+                {
+                    "name": "value",
+                    "type": "bool"
                 }
             ]
         },
@@ -177,18 +239,18 @@
             "base": "",
             "fields": [
                 {
-                    "name": "feed_index",
+                    "name": "index",
                     "type": "uint64"
                 }
             ]
         },
         {
-            "name": "updatefeed",
+            "name": "setfeed",
             "base": "",
             "fields": [
                 {
-                    "name": "feed_index",
-                    "type": "uint64"
+                    "name": "index",
+                    "type": "uint64?"
                 },
                 {
                     "name": "name",
@@ -219,13 +281,28 @@
     ],
     "actions": [
         {
-            "name": "addfeed",
-            "type": "addfeed",
+            "name": "approvemsig",
+            "type": "approvemsig",
+            "ricardian_contract": ""
+        },
+        {
+            "name": "cancelmsig",
+            "type": "cancelmsig",
             "ricardian_contract": ""
         },
         {
             "name": "cleanup",
             "type": "cleanup",
+            "ricardian_contract": ""
+        },
+        {
+            "name": "createmsig",
+            "type": "createmsig",
+            "ricardian_contract": ""
+        },
+        {
+            "name": "executemsig",
+            "type": "executemsig",
             "ricardian_contract": ""
         },
         {
@@ -239,8 +316,8 @@
             "ricardian_contract": ""
         },
         {
-            "name": "updatefeed",
-            "type": "updatefeed",
+            "name": "setfeed",
+            "type": "setfeed",
             "ricardian_contract": ""
         }
     ],
@@ -255,6 +332,13 @@
         {
             "name": "feeds",
             "type": "Feed",
+            "index_type": "i64",
+            "key_names": [],
+            "key_types": []
+        },
+        {
+            "name": "msigs",
+            "type": "Msig",
             "index_type": "i64",
             "key_names": [],
             "key_types": []

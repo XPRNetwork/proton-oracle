@@ -6,7 +6,9 @@ set(EOSIO_WASM_OLD_BEHAVIOR "Off")
 find_package(eosio.cdt)
 
 add_contract(atom atom
-   ${CMAKE_CURRENT_SOURCE_DIR}/src/atom.cpp
+   ${CMAKE_CURRENT_SOURCE_DIR}/src/feed_manager.cpp
+   ${CMAKE_CURRENT_SOURCE_DIR}/src/feed_provider.cpp
+   ${CMAKE_CURRENT_SOURCE_DIR}/src/feed_msig.cpp
    ${CMAKE_CURRENT_SOURCE_DIR}/src/aggregate.cpp
 )
 

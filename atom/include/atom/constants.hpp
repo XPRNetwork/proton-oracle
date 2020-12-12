@@ -8,6 +8,9 @@ namespace proton
   static constexpr auto SECONDS_IN_HOUR   = SECONDS_IN_MINUTE * 60;
   static constexpr auto SECONDS_IN_DAY    = SECONDS_IN_HOUR * 24;
 
+  static constexpr auto DATA_WINDOW_MINIMUM = 1;
+  static constexpr auto DATA_WINDOW_MAXIMUM = 250;
+
   namespace Aggregates
   {
     const std::string MODE   = "mode";
