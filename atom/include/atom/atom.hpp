@@ -92,6 +92,7 @@ namespace proton {
       const std::vector<ProviderPoint>& points
     );
     data_variant calculate_mode(const std::vector<ProviderPoint>& data);
+    data_variant calculate_mean_median(const std::vector<ProviderPoint>& data);
     data_variant calculate_mean(const std::vector<ProviderPoint>& data);
     data_variant calculate_median(const std::vector<ProviderPoint>& data);
     data_variant calculate_last(const std::vector<ProviderPoint>& data);

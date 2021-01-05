@@ -13,11 +13,12 @@ namespace proton
 
   namespace Aggregates
   {
-    const std::string MODE   = "mode";
-    const std::string MEDIAN = "median";
-    const std::string MEAN   = "mean";
-    const std::string LAST   = "last";
-    const std::string SD     = "sd";
+    const std::string MODE        = "mode";
+    const std::string MEDIAN      = "median";
+    const std::string MEAN        = "mean";
+    const std::string MEAN_MEDIAN = "mean_median";
+    const std::string LAST        = "last";
+    const std::string SD          = "sd";
   }
 
   // typedef std::variant<

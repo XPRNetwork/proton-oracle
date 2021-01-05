@@ -12,7 +12,9 @@ namespace proton
       return calculate_last(points);
     } else if (aggregate_function == Aggregates::MEDIAN) {
       return calculate_median(points);
-    } else if (aggregate_function == Aggregates::MEAN) {
+    } else if (aggregate_function == Aggregates::MEAN_MEDIAN) {
+      return calculate_mean_median(points);
+    }  else if (aggregate_function == Aggregates::MEAN) {
       return calculate_mean(points);
     } else if (aggregate_function == Aggregates::SD) {
       return calculate_sd(points);
@@ -38,6 +40,26 @@ namespace proton
 
   data_variant atom::calculate_last(const std::vector<ProviderPoint>& data) {
     return data.front().data;
+  }
+
+  // Take mean per provider, and take the median of means
+  data_variant atom::calculate_mean_median(const std::vector<ProviderPoint>& data) {
+    std::map<eosio::name, std::vector<ProviderPoint>> pointsByProvider;
+    for (auto const & x : data) {
+      pointsByProvider[x.provider].emplace_back(x);
+    }
+
+    std::vector<ProviderPoint> providerMeans;
+    for (auto const& [provider, providerPoints] : pointsByProvider) {
+      ProviderPoint point = {
+        .provider = provider,
+        .time = eosio::current_time_point(),
+        .data = calculate_mean(providerPoints)
+      };
+      providerMeans.emplace_back(point);
+    }
+
+    return calculate_median(providerMeans);
   }
 
   data_variant atom::calculate_mean(const std::vector<ProviderPoint>& data) {
