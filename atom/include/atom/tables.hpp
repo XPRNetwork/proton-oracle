@@ -11,8 +11,20 @@ namespace proton {
     data_variant (uint64_t val) { d_uint64_t = val; };
     data_variant (double val) { d_double = val; };
     
-    bool operator < ( const data_variant& rhs ) const { return true; }
-    bool operator > ( const data_variant& rhs ) const { return true; }
+    bool operator < ( const data_variant& rhs ) const {
+      std::string data_type = this->data_type();
+      eosio::check(this->data_type() == rhs.data_type(), "not equivalent data types");
+      if (data_type == "string") {
+        return this->get<std::string>() < rhs.get<std::string>();
+      } else if (data_type == "uint64_t") {
+        return this->get<uint64_t>() < rhs.get<uint64_t>();
+      } else if (data_type == "double") {
+        return this->get<double>() < rhs.get<double>();
+      } else {
+        eosio::check(false, "invalid data_variant <");
+        return false;
+      }
+    }
 
     std::string data_type ()const {
       if (d_string.has_value()) {
@@ -30,11 +42,14 @@ namespace proton {
     template<typename T>
     T get ()const {
       std::string data_type = this->data_type();
-      if constexpr (std::is_same<T, std::string>::value && data_type == "string") {
+      if constexpr (std::is_same<T, std::string>::value) {
+        eosio::check(data_type == "string", "invalid data_variant get");
         return *d_string;
-      } else if (std::is_same<T, uint64_t>::value && data_type == "uint64_t") {
+      } else if constexpr (std::is_same<T, uint64_t>::value) {
+        eosio::check(data_type == "uint64_t", "invalid data_variant get");
         return *d_uint64_t;
-      } else if (std::is_same<T, double>::value && data_type == "double") {
+      } else if constexpr (std::is_same<T, double>::value) {
+        eosio::check(data_type == "double", "invalid data_variant get");
         return *d_double;
       } else {
         eosio::check(false, "invalid data_variant get");
@@ -86,11 +101,11 @@ namespace proton {
     uint64_t index;
     eosio::name proposer;
     Feed new_feed;
-    std::map<eosio::name, bool> approved_providers;
+    std::map<eosio::name, bool> votes;
 
     uint64_t primary_key() const { return index; };
 
-    EOSLIB_SERIALIZE( Msig, (index)(proposer)(new_feed)(approved_providers) )
+    EOSLIB_SERIALIZE( Msig, (index)(proposer)(new_feed)(votes) )
   };
   typedef eosio::multi_index<"msigs"_n, Msig> msigs_table;
 }

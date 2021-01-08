@@ -35,6 +35,12 @@ namespace proton
         max_count = counts[data_item.data];
       }
     }
+    
+    // Reset if all equal counts
+    if (data.size() != max_count && data.size() % max_count == 0) {
+      max_item = {};
+    }
+
     return max_item;
   }
 
@@ -45,7 +51,10 @@ namespace proton
   // Take mean per provider, and take the median of means
   data_variant atom::calculate_mean_median(const std::vector<ProviderPoint>& data) {
     std::map<eosio::name, std::vector<ProviderPoint>> pointsByProvider;
-    for (auto const & x : data) {
+    for (auto const& x : data) {
+      if (pointsByProvider.find(x.provider) == pointsByProvider.end()) {
+        pointsByProvider[x.provider] = {};
+      }
       pointsByProvider[x.provider].emplace_back(x);
     }
 
@@ -63,15 +72,11 @@ namespace proton
   }
 
   data_variant atom::calculate_mean(const std::vector<ProviderPoint>& data) {
-    // Initialize
-    double total;
-    double mean;    
-
-    // Add up total
+    double total = 0;
     for (auto& item: data) {
       total += item.data.get<double>();
     }
-    mean = total / (double)data.size();
+    double mean = total / (double)data.size();
 
     return data_variant{mean};
   }

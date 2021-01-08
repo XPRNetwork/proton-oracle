@@ -2,7 +2,57 @@
 
 namespace proton
 {
+  void atom::_setfeed (
+    const eosio::name& ram_payer,
+    const Feed& feed
+  ) {
+    // Auth
+    require_auth(ram_payer);
+
+    // General validation
+    eosio::check(feed.name.size() < 256, "name too long");
+    eosio::check(feed.description.size() < 256, "description too long");
+    eosio::check(feed.config.size() < 25, "config too long");
+    eosio::check(feed.providers.size() < 100, "too many providers");
+
+    // Validate data type
+    auto type_index_itr = type_index_to_aggregates.find(feed.data_type);
+    eosio::check(type_index_itr != type_index_to_aggregates.end(), "invalid type index");
+
+    // Validate aggregate function
+    auto aggregate_itr = std::find(type_index_itr->second.begin(), type_index_itr->second.end(), feed.aggregate_function);
+    eosio::check(aggregate_itr != type_index_itr->second.end(), "invalid aggregate function");
+
+    // Validate config
+    auto config_data_window_size = feed.config.find("config_data_window_size");
+    eosio::check(config_data_window_size != feed.config.end(), "config must contain data_window_size ");
+    eosio::check(config_data_window_size->second >= DATA_WINDOW_MINIMUM && config_data_window_size->second <= DATA_WINDOW_MAXIMUM, "data window too small or too large");
+
+    // Create feed
+    auto feed_itr = _feeds.find(feed.index);
+    if (feed_itr == _feeds.end())
+    {
+      feed_itr = _feeds.emplace(ram_payer, [&](auto& f) {
+        f = feed;
+      });
+
+      _data.emplace(ram_payer, [&](auto& f) {
+        f.feed_index = feed_itr->index;
+        f.points = {};
+      });
+    }
+    // Replace feed
+    else
+    {
+      _feeds.modify(feed_itr, ram_payer, [&](auto& f) {
+        f = feed;
+      });
+    }
+  }
+
   ACTION atom::setfeed (
+    const eosio::name account,
+    const eosio::name ram_payer,
     std::optional<uint64_t> index,
     const std::string& name,
     const std::string& description,
@@ -11,14 +61,15 @@ namespace proton
     const std::map<std::string, uint64_t>& config,
     const std::vector<eosio::name>& providers
   ) {
-    // Feed already exists (replacing)
+    // Replace feed (ADMIN ONLY)
     if (index.has_value())
     {
       require_auth(get_self());
     }
-    // Feed does not exist (creating)
+    // Create feed (ANYONE)
     else
     {
+      require_auth(account);
       index = _feeds.available_primary_key();
     }
 
@@ -37,36 +88,7 @@ namespace proton
       .config = config,
       .providers = providers_map
     };
-
-    // Find feed
-    auto feed_itr = _feeds.require_find(feed.index, "feed does not exist");
-
-    // Validation
-    auto type_index_itr = type_index_to_aggregates.find(feed_itr->data_type);
-    eosio::check(type_index_itr != type_index_to_aggregates.end(), "invalid type index");
-    auto aggregate_itr = std::find(type_index_itr->second.begin(), type_index_itr->second.end(), feed_itr->aggregate_function);
-    eosio::check(aggregate_itr != type_index_itr->second.end(), "invalid aggregate function");
-
-    // Validate config
-    auto config_data_window_size = feed.config.find("config_data_window_size");
-    eosio::check(config_data_window_size != feed.config.end(), "config must contain data_window_size ");
-    eosio::check(config_data_window_size->second >= DATA_WINDOW_MINIMUM && config_data_window_size->second <= DATA_WINDOW_MAXIMUM, "data window too small or too large");
-
-    // Create feed
-    if (feed_itr == _feeds.end())
-    {
-      feed_itr = _feeds.emplace(get_self(), [&](auto& f) { f = feed; });
-
-      _data.emplace(get_self(), [&](auto& f) {
-        f.feed_index = feed_itr->index;
-        f.points = {};
-      });
-    }
-    // Replace feed
-    else
-    {
-      _feeds.modify(feed_itr, get_self(), [&](auto& f) { f = feed; });
-    }
+    _setfeed(ram_payer, feed);
   }
 
   ACTION atom::removefeed (const uint64_t& index) {

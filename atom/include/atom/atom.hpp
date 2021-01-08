@@ -28,6 +28,8 @@ namespace proton {
         _msigs(receiver, receiver.value) {}
 
     ACTION setfeed (
+      const eosio::name account,
+      const eosio::name ram_payer,
       std::optional<uint64_t> index,
       const std::string& name,
       const std::string& description,
@@ -48,12 +50,13 @@ namespace proton {
       const eosio::name& proposer,
       const Feed& feed
     );
-    ACTION approvemsig (
+    ACTION votemsig (
       const eosio::name& provider,
       const uint64_t& msig_index,
       const bool& approve
     );
     ACTION executemsig (
+      const eosio::name& executor,
       const uint64_t& msig_index
     );
     ACTION cancelmsig (
@@ -78,7 +81,7 @@ namespace proton {
     }
 
     // Action wrappers
-    using setfeed_action = eosio::action_wrapper<"setfeed"_n, &atom::setfeed>;
+    // using setfeed_action = eosio::action_wrapper<"setfeed"_n, &atom::setfeed>;
     using feed_action = eosio::action_wrapper<"feed"_n, &atom::feed>;
 
     // Initialize tables from tables.hpp
@@ -87,6 +90,10 @@ namespace proton {
     msigs_table _msigs;
 
   private:
+    void _setfeed (
+      const eosio::name& ram_payer,
+      const Feed& feed
+    );
     data_variant aggregate (
       const std::string& aggregate_function,
       const std::vector<ProviderPoint>& points

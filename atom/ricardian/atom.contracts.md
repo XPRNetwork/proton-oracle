@@ -38,7 +38,7 @@ icon:
 ---
 .
 
-<h1 class="contract">approvemsig</h1>
+<h1 class="contract">votemsig</h1>
 
 ---
 spec_version: "0.2.0"

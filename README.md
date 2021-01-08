@@ -84,7 +84,7 @@ Create multisig
 - `{Feed} feed` - New feed to propose
 
 
-## ACTION `approvemsig`
+## ACTION `votemsig`
 
 Approve / reject multisig
 
@@ -94,7 +94,7 @@ Approve / reject multisig
 
 - `{name} provider` - Provider account
 - `{uint64_t} msig_index` - Index of the msig to approve
-- `{bool} approve` - `true` to approve / `false` to reject
+- `{bool} vote` - `true` to approve / `false` to reject
 
 
 ## ACTION `executemsig`
@@ -189,7 +189,7 @@ Cancel multisig
 - `{uint64_t} index` - index of the msig
 - `{name} proposer` - aggegrate data point
 - `{Feed} new_feed` - vector of provider points
-- `{map<name, bool>} approved_providers` - Map of providers who have voted to their true/false vote
+- `{map<name, bool>} votes` - Map of providers who have voted to their true/false vote
 
 ### example msig row
 
@@ -209,7 +209,7 @@ Cancel multisig
     },
     "providers": ["bot1", "bot2", "bot3"]
   },
-  "approved_providers": {
+  "votes": {
     "bot1": true,
     "bot2": false
   }

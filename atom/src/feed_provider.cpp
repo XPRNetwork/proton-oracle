@@ -27,11 +27,13 @@ namespace proton
       eosio::check(seconds_ago >= min_provider_wait_sec->second, "wait time too short between inserting data");
     }
 
-    // Create point
+    // Create new point
     auto points = (*data_itr).points;
-    const ProviderPoint point = { account, eosio::current_time_point(), data };
-
-    // Insert point
+    const ProviderPoint point = {
+      .provider = account,
+      .time = eosio::current_time_point(),
+      .data = data
+    };
     points.insert(points.begin(), point);
 
     // Remove points if:

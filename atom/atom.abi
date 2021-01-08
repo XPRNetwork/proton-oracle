@@ -72,7 +72,7 @@
                     "type": "Feed"
                 },
                 {
-                    "name": "approved_providers",
+                    "name": "votes",
                     "type": "pair_name_bool[]"
                 }
             ]
@@ -92,24 +92,6 @@
                 {
                     "name": "data",
                     "type": "data_variant"
-                }
-            ]
-        },
-        {
-            "name": "approvemsig",
-            "base": "",
-            "fields": [
-                {
-                    "name": "provider",
-                    "type": "name"
-                },
-                {
-                    "name": "msig_index",
-                    "type": "uint64"
-                },
-                {
-                    "name": "approve",
-                    "type": "bool"
                 }
             ]
         },
@@ -168,6 +150,10 @@
             "name": "executemsig",
             "base": "",
             "fields": [
+                {
+                    "name": "executor",
+                    "type": "name"
+                },
                 {
                     "name": "msig_index",
                     "type": "uint64"
@@ -249,6 +235,14 @@
             "base": "",
             "fields": [
                 {
+                    "name": "account",
+                    "type": "name"
+                },
+                {
+                    "name": "ram_payer",
+                    "type": "name"
+                },
+                {
                     "name": "index",
                     "type": "uint64?"
                 },
@@ -277,48 +271,66 @@
                     "type": "name[]"
                 }
             ]
+        },
+        {
+            "name": "votemsig",
+            "base": "",
+            "fields": [
+                {
+                    "name": "provider",
+                    "type": "name"
+                },
+                {
+                    "name": "msig_index",
+                    "type": "uint64"
+                },
+                {
+                    "name": "approve",
+                    "type": "bool"
+                }
+            ]
         }
     ],
     "actions": [
         {
-            "name": "approvemsig",
-            "type": "approvemsig",
-            "ricardian_contract": ""
-        },
-        {
             "name": "cancelmsig",
             "type": "cancelmsig",
-            "ricardian_contract": ""
+            "ricardian_contract": "---\nspec_version: \"0.2.0\"\ntitle: Cancel Msig\nsummary: 'Cancel Msig'\nicon:\n---\n."
         },
         {
             "name": "cleanup",
             "type": "cleanup",
-            "ricardian_contract": ""
+            "ricardian_contract": "---\nspec_version: \"0.2.0\"\ntitle: Cleanup\nsummary: 'Cleanup'\nicon:\n---\n."
         },
         {
             "name": "createmsig",
             "type": "createmsig",
-            "ricardian_contract": ""
+            "ricardian_contract": "---\nspec_version: \"0.2.0\"\ntitle: Create Msig\nsummary: 'Create Msig'\nicon:\n---\n."
         },
         {
             "name": "executemsig",
             "type": "executemsig",
-            "ricardian_contract": ""
+            "ricardian_contract": "---\nspec_version: \"0.2.0\"\ntitle: Execute Msig\nsummary: 'Execute Msig'\nicon:\n---\n."
         },
         {
             "name": "feed",
             "type": "feed",
-            "ricardian_contract": ""
+            "ricardian_contract": "---\nspec_version: \"0.2.0\"\ntitle: Feed\nsummary: 'Feed'\nicon:\n---\n."
         },
         {
             "name": "removefeed",
             "type": "removefeed",
-            "ricardian_contract": ""
+            "ricardian_contract": "---\nspec_version: \"0.2.0\"\ntitle: Remove Feed\nsummary: 'Remove Feed'\nicon:\n---\n."
         },
         {
             "name": "setfeed",
             "type": "setfeed",
-            "ricardian_contract": ""
+            "ricardian_contract": "---\nspec_version: \"0.2.0\"\ntitle: Set Feed\nsummary: 'Set Feed'\nicon:\n---\n."
+        },
+        {
+            "name": "votemsig",
+            "type": "votemsig",
+            "ricardian_contract": "---\nspec_version: \"0.2.0\"\ntitle: Approve Msig\nsummary: 'Approve Msig'\nicon:\n---\n."
         }
     ],
     "tables": [
