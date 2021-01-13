@@ -48,7 +48,7 @@ const toString = function (res) {
     return res
 }
 
-const DEFAULT_DATE = "1970-01-01T00:26:50.141"
+const DEFAULT_DATE = "1970-01-01T00:26:50.347"
 
 describe("Atom", function (eoslime) {
 
@@ -78,18 +78,17 @@ describe("Atom", function (eoslime) {
 
         feed1 = {
             account: user1.name,
-            ram_payer: user1.name,
             index: undefined,
             name: 'Oracle 1',
             description: 'Oracle 1 Description',
             aggregate_function: 'mean',
             data_type: 'double',
             config: [
-                { key: 'config_data_window_size', value: 8 }
+                { key: 'data_window_size', value: 8 }
             ],
             providers: [oracle1.name]
         }
-        const {account, ram_payer, ...feed1SansAccount} = feed1
+        const {account, ...feed1SansAccount} = feed1
         feed1WithoutAccount = feed1SansAccount
     });
 
@@ -263,14 +262,14 @@ describe("Atom", function (eoslime) {
 
         it("Replace Feed (Admin)", async () => {
             const config = [
-                { key: 'config_data_window_size', value: 10 }
+                { key: 'data_window_size', value: 10 }
             ]
 
             await oracleContract.actions.setfeed(Object.values(feed1), { from: user1 })
             await oracleContract.actions.setfeed(Object.values({
                 ...feed1,
+                account: oracleContract.name,
                 index: 0,
-                ram_payer: oracleContract.name,
                 config
             }), { from: oracleContract.account })
 
@@ -290,7 +289,7 @@ describe("Atom", function (eoslime) {
 
         it("Fails if Random User try to Replace Feed (Random User)", async () => {
             const config = [
-                { key: 'config_data_window_size', value: 10 }
+                { key: 'data_window_size', value: 10 }
             ]
 
             await oracleContract.actions.setfeed(Object.values(feed1), { from: user1 })

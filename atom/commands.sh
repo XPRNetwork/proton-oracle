@@ -2,32 +2,19 @@ cleosp set contract oracles atom
 
 cleosp push action oracles cleanup '[]' -p oracles 
 
-cleosp push action oracles addfeed '{
+cleospt push action oracles setfeed '{
+        "account": "oracles",
+        "index": "2",
         "name": "XPR/BTC",
-        "description": "Tracks real-time price of the XPR/BTC pair",
-        "aggregate_function": "mean",
+        "description": "Tracks 10 day average price of the XPR/BTC pair",
+        "aggregate_function": "mean_median",
         "data_type": "double",
         "config": [
-                { "key": "data_window_size", "value": 20 },
-                { "key": "min_provider_wait_sec", "value": 0 },
-                { "key": "data_freshness_sec", "value": 0 },
-                { "key": "data_same_provider_limit", "value": 0 }
+                { "key": "data_window_size", "value": 210 },
+                { "key": "min_provider_wait_sec", "value": 86400 },
+                { "key": "data_same_provider_limit", "value": 10 }
         ],
-        "providers": ["oracles", "bot1", "bot2", "bot3", "bot4"]
-}' -p oracles;
-
-cleosp push action oracles addfeed '{
-        "name": "BTC/USDT",
-        "description": "Tracks real-time price of the BTC/USDT pair",
-        "aggregate_function": "mean",
-        "data_type": "double",
-        "config": [
-                { "key": "data_window_size", "value": 20 },
-                { "key": "min_provider_wait_sec", "value": 0 },
-                { "key": "data_freshness_sec", "value": 0 },
-                { "key": "data_same_provider_limit", "value": 5 }
-        ],
-        "providers": ["oracles", "bot1", "bot2", "bot3", "bot4"]
+        "providers": ["bot1", "bot2", "bot3", "bot4", "cryptolions"]
 }' -p oracles;
 
 cleosp push action oracles updatefeed '{

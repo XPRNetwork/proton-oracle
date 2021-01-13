@@ -29,7 +29,6 @@ namespace proton {
 
     ACTION setfeed (
       const eosio::name account,
-      const eosio::name ram_payer,
       std::optional<uint64_t> index,
       const std::string& name,
       const std::string& description,

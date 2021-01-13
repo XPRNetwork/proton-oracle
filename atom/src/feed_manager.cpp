@@ -24,9 +24,9 @@ namespace proton
     eosio::check(aggregate_itr != type_index_itr->second.end(), "invalid aggregate function");
 
     // Validate config
-    auto config_data_window_size = feed.config.find("config_data_window_size");
-    eosio::check(config_data_window_size != feed.config.end(), "config must contain data_window_size ");
-    eosio::check(config_data_window_size->second >= DATA_WINDOW_MINIMUM && config_data_window_size->second <= DATA_WINDOW_MAXIMUM, "data window too small or too large");
+    auto data_window_size = feed.config.find("data_window_size");
+    eosio::check(data_window_size != feed.config.end(), "config must contain data_window_size");
+    eosio::check(data_window_size->second >= DATA_WINDOW_MINIMUM && data_window_size->second <= DATA_WINDOW_MAXIMUM, "data window too small or too large");
 
     // Create feed
     auto feed_itr = _feeds.find(feed.index);
@@ -52,7 +52,6 @@ namespace proton
 
   ACTION atom::setfeed (
     const eosio::name account,
-    const eosio::name ram_payer,
     std::optional<uint64_t> index,
     const std::string& name,
     const std::string& description,
@@ -88,7 +87,7 @@ namespace proton
       .config = config,
       .providers = providers_map
     };
-    _setfeed(ram_payer, feed);
+    _setfeed(account, feed);
   }
 
   ACTION atom::removefeed (const uint64_t& index) {

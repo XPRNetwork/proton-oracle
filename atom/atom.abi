@@ -239,10 +239,6 @@
                     "type": "name"
                 },
                 {
-                    "name": "ram_payer",
-                    "type": "name"
-                },
-                {
                     "name": "index",
                     "type": "uint64?"
                 },
