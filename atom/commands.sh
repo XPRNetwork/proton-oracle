@@ -1,36 +1,29 @@
-cleosp set contract oracles atom 
-
-cleosp push action oracles cleanup '[]' -p oracles 
-
-cleospt push action oracles setfeed '{
+ACTION='{
         "account": "oracles",
         "index": "2",
         "name": "XPR/BTC",
-        "description": "Tracks 10 day average price of the XPR/BTC pair",
+        "description": "Tracks 14 day average price of the XPR/BTC pair",
         "aggregate_function": "mean_median",
         "data_type": "double",
         "config": [
                 { "key": "data_window_size", "value": 210 },
                 { "key": "min_provider_wait_sec", "value": 86400 },
-                { "key": "data_same_provider_limit", "value": 10 }
+                { "key": "data_same_provider_limit", "value": 14 }
         ],
-        "providers": ["bot1", "bot2", "bot3", "bot4", "cryptolions"]
-}' -p oracles;
+        "providers": ["bot1", "bot2", "bot3", "bot4", "cryptolions", "eosusa", "protonnz", "eosrio"]
+}'
 
-cleosp push action oracles updatefeed '{
-        "feed_index": 0,
-        "name": "XPR/BTC",
-        "description": "Tracks real-time price of the XPR/BTC pair",
-        "aggregate_function": "mean",
-        "data_type": "double",
-        "config": [
-                { "key": "data_window_size", "value": 20 },
-                { "key": "min_provider_wait_sec", "value": 0 },
-                { "key": "data_freshness_sec", "value": 0 },
-                { "key": "data_same_provider_limit", "value": 0 }
-        ],
-        "providers": ["oracles", "bottest", "bot1"]
-}' -p oracles;
+cleospt push action oracles setfeed $ACTION -p oracles;
+
+cleospt multisig propose prop1 '[
+        { "actor": "syed", "permission": "partner" },
+        { "actor": "marshallbits", "permission": "partner" },
+        { "actor": "jacob", "permission": "partner" },
+        { "actor": "glenn", "permission": "partner" },
+        { "actor": "fred", "permission": "partner" }
+]' '[
+        { "actor": "oracles", "permission": "active" },
+]' oracles setfeed $ACTION syed;
 
 cleosp push action oracles feed '{
         "account": "oracles",
