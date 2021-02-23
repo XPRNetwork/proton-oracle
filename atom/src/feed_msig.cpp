@@ -52,6 +52,9 @@ namespace proton
 
     // Set feed
     _setfeed(executor, msig->new_feed);
+
+    // Delete msig
+    _msigs.erase(msig);
   }
 
   ACTION atom::cancelmsig (
