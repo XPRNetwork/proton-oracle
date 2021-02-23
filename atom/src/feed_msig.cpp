@@ -48,7 +48,7 @@ namespace proton
     uint8_t provided_approvals = std::count_if(msig->votes.begin(), msig->votes.end(), [&](auto& i) {
       return i.second;
     });
-    eosio::check(min_approvals >= provided_approvals, "not enough approvals");
+    eosio::check(provided_approvals >= min_approvals, "not enough approvals");
 
     // Set feed
     _setfeed(executor, msig->new_feed);
