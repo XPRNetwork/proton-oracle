@@ -35,11 +35,6 @@ namespace proton
         max_count = counts[data_item.data];
       }
     }
-    
-    // Reset if all equal counts
-    if (data.size() != max_count && data.size() % max_count == 0) {
-      max_item = {};
-    }
 
     return max_item;
   }

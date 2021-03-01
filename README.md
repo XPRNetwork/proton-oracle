@@ -15,6 +15,8 @@
 
 "last"   -> {double, uint64_t, string}
 
+Notes: Median will return average of middle two values if an even number of values are present. Mode will return the last mode if there are 2 or more modes in the dataset.
+
 ## Feed Config  
 {uint64_t} data_window_size (min 1, max 250)  
 
