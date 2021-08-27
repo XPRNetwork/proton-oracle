@@ -44,6 +44,8 @@ namespace proton
     // Replace feed
     else
     {
+      eosio::check(feed.name == feed_itr->name, "name must remain the same for oracle");
+
       _feeds.modify(feed_itr, ram_payer, [&](auto& f) {
         f = feed;
       });
