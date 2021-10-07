@@ -59,6 +59,40 @@ LEND_XUSDC_ORACLE='{
         "providers": ["swapscold"]
 }'
 
+
+LEND_XMT_ORACLE='{
+        "account": "oracles",
+        "index": "6",
+        "name": "MTL/USD",
+        "description": "Tracks 10 min average price of the XMT/USD pair",
+        "aggregate_function": "mean_median",
+        "data_type": "double",
+        "config": [
+                { "key": "data_window_size", "value": 210 },
+                { "key": "min_provider_wait_sec", "value": 60 },
+                { "key": "data_same_provider_limit", "value": 10 }
+        ],
+        "providers": ["a.oracles", "b.oracles", "c.oracles", "d.oracles", "e.oracles"]
+}'
+
+
+
+LEND_XETH_ORACLE='{
+        "account": "oracles",
+        "index": "7",
+        "name": "ETH/USD",
+        "description": "Tracks 10 min average price of the XETH/USD pair",
+        "aggregate_function": "mean_median",
+        "data_type": "double",
+        "config": [
+                { "key": "data_window_size", "value": 210 },
+                { "key": "min_provider_wait_sec", "value": 60 },
+                { "key": "data_same_provider_limit", "value": 10 }
+        ],
+        "providers": ["a.oracles", "b.oracles", "c.oracles", "d.oracles", "e.oracles"]
+}'
+
+
 MSIG_PERM='[
         { "actor": "swapsledger2", "permission": "active" },
         { "actor": "swapsledger3", "permission": "active" },
@@ -78,6 +112,6 @@ TEST_FEED='{
 }'
 
 # ACTIONS
-cleospt push action oracles setfeed $LEND_XUSDC_ORACLE -p oracles;
+cleospt push action oracles setfeed $LEND_XETH_ORACLE -p oracles;
 cleospt multisig propose prop1 $MSIG_PERM $ORACLES_PERM oracles setfeed $ACTION swapsledger4;
 cleospt push action oracles feed $TEST_FEED -p swapscold;
