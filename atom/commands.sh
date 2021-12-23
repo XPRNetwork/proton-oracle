@@ -25,7 +25,7 @@ LEND_XPR_ORACLE='{
                 { "key": "min_provider_wait_sec", "value": 60 },
                 { "key": "data_same_provider_limit", "value": 10 }
         ],
-        "providers": ["a.oracles", "b.oracles", "c.oracles", "d.oracles", "e.oracles"]
+        "providers": ["a.oracles", "b.oracles", "c.oracles", "d.oracles", "e.oracles", "f.oracles", "g.oracles", "h.oracles"]
 }'
 
 LEND_XBTC_ORACLE='{
@@ -40,7 +40,7 @@ LEND_XBTC_ORACLE='{
                 { "key": "min_provider_wait_sec", "value": 60 },
                 { "key": "data_same_provider_limit", "value": 10 }
         ],
-        "providers": ["a.oracles", "b.oracles", "c.oracles", "d.oracles", "e.oracles"]
+        "providers": ["a.oracles", "b.oracles", "c.oracles", "d.oracles", "e.oracles", "f.oracles", "g.oracles", "h.oracles"]
 }'
 
 
@@ -72,10 +72,8 @@ LEND_XMT_ORACLE='{
                 { "key": "min_provider_wait_sec", "value": 60 },
                 { "key": "data_same_provider_limit", "value": 10 }
         ],
-        "providers": ["a.oracles", "b.oracles", "c.oracles", "d.oracles", "e.oracles"]
+        "providers": ["a.oracles", "b.oracles", "c.oracles", "d.oracles", "e.oracles", "f.oracles", "g.oracles", "h.oracles"]
 }'
-
-
 
 LEND_XETH_ORACLE='{
         "account": "oracles",
@@ -89,7 +87,7 @@ LEND_XETH_ORACLE='{
                 { "key": "min_provider_wait_sec", "value": 60 },
                 { "key": "data_same_provider_limit", "value": 10 }
         ],
-        "providers": ["a.oracles", "b.oracles", "c.oracles", "d.oracles", "e.oracles"]
+        "providers": ["a.oracles", "b.oracles", "c.oracles", "d.oracles", "e.oracles", "f.oracles", "g.oracles", "h.oracles"]
 }'
 
 
