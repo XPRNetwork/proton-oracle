@@ -1,0 +1,29 @@
+{
+    "compilerOptions": {
+      "useUnknownInCatchVariables": false,
+      "strictNullChecks": true,
+      "target": "ES2020",
+      "module": "commonjs",
+      "strict": true,
+      "jsx": "preserve",
+      "importHelpers": true,
+      "moduleResolution": "node",
+      "skipLibCheck": true,
+      "esModuleInterop": true,
+      "allowJs": true,
+      "allowSyntheticDefaultImports": true,
+      "sourceMap": true,
+      "baseUrl": ".",
+      "lib": [
+        "esnext",
+        "dom",
+        "dom.iterable",
+        "scripthost"
+      ],
+      "resolveJsonModule": true
+    },
+    "include": [
+      "./**/*.ts"
+    ]
+  }
+  
