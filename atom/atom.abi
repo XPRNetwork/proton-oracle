@@ -291,42 +291,42 @@
         {
             "name": "cancelmsig",
             "type": "cancelmsig",
-            "ricardian_contract": "---\nspec_version: \"0.2.0\"\ntitle: Cancel Msig\nsummary: 'Cancel Msig'\nicon:\n---\n."
+            "ricardian_contract": ""
         },
         {
             "name": "cleanup",
             "type": "cleanup",
-            "ricardian_contract": "---\nspec_version: \"0.2.0\"\ntitle: Cleanup\nsummary: 'Cleanup'\nicon:\n---\n."
+            "ricardian_contract": ""
         },
         {
             "name": "createmsig",
             "type": "createmsig",
-            "ricardian_contract": "---\nspec_version: \"0.2.0\"\ntitle: Create Msig\nsummary: 'Create Msig'\nicon:\n---\n."
+            "ricardian_contract": ""
         },
         {
             "name": "executemsig",
             "type": "executemsig",
-            "ricardian_contract": "---\nspec_version: \"0.2.0\"\ntitle: Execute Msig\nsummary: 'Execute Msig'\nicon:\n---\n."
+            "ricardian_contract": ""
         },
         {
             "name": "feed",
             "type": "feed",
-            "ricardian_contract": "---\nspec_version: \"0.2.0\"\ntitle: Feed\nsummary: 'Feed'\nicon:\n---\n."
+            "ricardian_contract": ""
         },
         {
             "name": "removefeed",
             "type": "removefeed",
-            "ricardian_contract": "---\nspec_version: \"0.2.0\"\ntitle: Remove Feed\nsummary: 'Remove Feed'\nicon:\n---\n."
+            "ricardian_contract": ""
         },
         {
             "name": "setfeed",
             "type": "setfeed",
-            "ricardian_contract": "---\nspec_version: \"0.2.0\"\ntitle: Set Feed\nsummary: 'Set Feed'\nicon:\n---\n."
+            "ricardian_contract": ""
         },
         {
             "name": "votemsig",
             "type": "votemsig",
-            "ricardian_contract": "---\nspec_version: \"0.2.0\"\ntitle: Approve Msig\nsummary: 'Approve Msig'\nicon:\n---\n."
+            "ricardian_contract": ""
         }
     ],
     "tables": [

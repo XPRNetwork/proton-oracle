@@ -52,7 +52,7 @@ namespace proton
     }
   }
 
-  ACTION atom::setfeed (
+  void atom::setfeed (
     const eosio::name account,
     std::optional<uint64_t> index,
     const std::string& name,
@@ -92,7 +92,7 @@ namespace proton
     _setfeed(account, feed);
   }
 
-  ACTION atom::removefeed (const uint64_t& index) {
+  void atom::removefeed (const uint64_t& index) {
     require_auth(get_self());
 
     auto feed = _feeds.require_find(index, "feed not found");

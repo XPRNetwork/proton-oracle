@@ -17,7 +17,7 @@
 #include "tables.hpp"
 
 namespace proton {
-  CONTRACT atom : public eosio::contract {
+  class [[eosio::contract("atom")]] atom : public eosio::contract {
   public:
     using contract::contract;
 
@@ -27,7 +27,8 @@ namespace proton {
         _data(receiver, receiver.value),
         _msigs(receiver, receiver.value) {}
 
-    ACTION setfeed (
+    [[eosio::action]]
+    void setfeed (
       const eosio::name account,
       std::optional<uint64_t> index,
       const std::string& name,
@@ -37,33 +38,44 @@ namespace proton {
       const std::map<std::string, uint64_t>& config,
       const std::vector<eosio::name>& providers
     );
-    ACTION removefeed ( const uint64_t& index );
 
-    ACTION feed (
+    [[eosio::action]]
+    void removefeed ( const uint64_t& index );
+
+    [[eosio::action]]
+    void feed (
       const eosio::name& account,
       const uint64_t& feed_index,
       const data_variant& data
     );
 
-    ACTION createmsig (
+    [[eosio::action]]
+    void createmsig (
       const eosio::name& proposer,
       const Feed& feed
     );
-    ACTION votemsig (
+
+    [[eosio::action]]
+    void votemsig (
       const eosio::name& provider,
       const uint64_t& msig_index,
       const bool& approve
     );
-    ACTION executemsig (
+
+    [[eosio::action]]
+    void executemsig (
       const eosio::name& executor,
       const uint64_t& msig_index
     );
-    ACTION cancelmsig (
+
+    [[eosio::action]]
+    void cancelmsig (
       const eosio::name& proposer,
       const uint64_t& msig_index
     );
 
-    ACTION cleanup () {
+    [[eosio::action]]
+    void cleanup () {
       require_auth(get_self());
       
       feeds_table db(get_self(), get_self().value);

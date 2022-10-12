@@ -2,7 +2,7 @@
 
 namespace proton
 {
-  ACTION atom::createmsig (
+  void atom::createmsig (
     const eosio::name& proposer,
     const Feed& feed
   ) {
@@ -16,7 +16,7 @@ namespace proton
     });
   }
 
-  ACTION atom::votemsig (
+  void atom::votemsig (
     const eosio::name& provider,
     const uint64_t& msig_index,
     const bool& vote
@@ -32,7 +32,7 @@ namespace proton
     });
   }
 
-  ACTION atom::executemsig (
+  void atom::executemsig (
     const eosio::name& executor,
     const uint64_t& msig_index
   ) {
@@ -57,7 +57,7 @@ namespace proton
     _msigs.erase(msig);
   }
 
-  ACTION atom::cancelmsig (
+  void atom::cancelmsig (
     const eosio::name& proposer,
     const uint64_t& msig_index
   ) {
