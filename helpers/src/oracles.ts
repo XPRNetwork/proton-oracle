@@ -55,5 +55,6 @@ export const oracles: { [key: string]: Oracle } = {
     "UST/USD":  lendOracleFormat(10, "UST"),
     "LUNA/USD": lendOracleFormat(11, "LUNA"),
     "XMD/USD": lendOracleFormat(12, "XMD", ["swapscold"]),
+    "BUSD/USD": lendOracleFormat(13, "BUSD"),
 }
 
