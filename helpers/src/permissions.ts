@@ -11,6 +11,7 @@ export const SWAPSCOLD_MSIG_PERM: Authority[] = [
     { "actor": "swapsledger2", "permission": "active" },
     { "actor": "swapsledger3", "permission": "active" },
     { "actor": "swapsledger4", "permission": "active" },
+    { "actor": "metalcfo", "permission": "active" },
 ]
 export const ORACLES_PERM: Authority[] = [{ "actor": ORACLE_CONTRACT, "permission": "active" }]
 export const swapscoldPerm: Authority[] = [{ "actor": "swapscold", "permission": "active" }]

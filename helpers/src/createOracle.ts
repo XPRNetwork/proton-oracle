@@ -2,7 +2,8 @@ import { PROPOSAL_NAME, MSIG_PROPOSER, PROPOSER_PERM, ORACLE_CONTRACT, ORACLES_P
 import { oracles } from './oracles'
 
 const oraclesToCreate = [
-    oracles["BUSD/USD"],
+    oracles["PAX/USD"],
+    oracles["TUSD/USD"],
 ]
 
 const actions = []

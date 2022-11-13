@@ -45,16 +45,18 @@ export const oracles: { [key: string]: Oracle } = {
         "providers": ["bot1", "bot2", "bot3", "bot4", "cryptolions", "eosusa", "protonnz", "eosrio"]
     },
 
-    "XPR/USD":  lendOracleFormat(3, "XPR"),
-    "BTC/USD":  lendOracleFormat(4, "BTC"),
+    "XPR/USD" : lendOracleFormat(3, "XPR"),
+    "BTC/USD" : lendOracleFormat(4, "BTC"),
     "USDC/USD": lendOracleFormat(5, "USDC", ["swapscold"]),
-    "MTL/USD":  lendOracleFormat(6, "MTL"),
-    "ETH/USD":  lendOracleFormat(7, "ETH"),
+    "MTL/USD" : lendOracleFormat(6, "MTL"),
+    "ETH/USD" : lendOracleFormat(7, "ETH"),
     "DOGE/USD": lendOracleFormat(8, "DOGE"),
     "USDT/USD": lendOracleFormat(9, "USDT"),
-    "UST/USD":  lendOracleFormat(10, "UST"),
+    "UST/USD" : lendOracleFormat(10, "UST"),
     "LUNA/USD": lendOracleFormat(11, "LUNA"),
-    "XMD/USD": lendOracleFormat(12, "XMD", ["swapscold"]),
+    "XMD/USD" : lendOracleFormat(12, "XMD", ["swapscold"]),
     "BUSD/USD": lendOracleFormat(13, "BUSD"),
+    "PAX/USD" : lendOracleFormat(14, "PAX"),
+    "TUSD/USD": lendOracleFormat(15, "TUSD"),
 }
 
