@@ -1,0 +1,23 @@
+{
+  "expiration": "2023-08-12T21:34:35",
+  "ref_block_num": 7652,
+  "ref_block_prefix": 186387360,
+  "max_net_usage_words": 0,
+  "max_cpu_usage_ms": 0,
+  "delay_sec": 0,
+  "context_free_actions": [],
+  "actions": [{
+      "account": "oracles",
+      "name": "setfeed",
+      "authorization": [{
+          "actor": "oracles",
+          "permission": "active"
+        }
+      ],
+      "data": "00000000ab88cca5010200000000000000075850522f4254432f547261636b73203134206461792061766572616765207072696365206f6620746865205850522f42544320706169720b6d65616e5f6d656469616e06646f75626c650310646174615f77696e646f775f73697a65d200000000000000156d696e5f70726f76696465725f776169745f736563805101000000000018646174615f73616d655f70726f76696465725f6c696d69740e0000000000000004000000000010323d000000000020323d000000000030323d000000000040323d"
+    }
+  ],
+  "transaction_extensions": [],
+  "signatures": [],
+  "context_free_data": []
+}

@@ -42,12 +42,25 @@ export const oracles: { [key: string]: Oracle } = {
                 { "key": "min_provider_wait_sec", "value": 86400 },
                 { "key": "data_same_provider_limit", "value": 14 }
         ],
-        "providers": ["bot1", "bot2", "bot3", "bot4", "cryptolions", "eosusa", "protonnz", "eosrio"]
+        "providers": ["bot1", "bot2", "bot3", "bot4"]
     },
 
     "XPR/USD" : lendOracleFormat(3, "XPR"),
     "BTC/USD" : lendOracleFormat(4, "BTC"),
-    "USDC/USD": lendOracleFormat(5, "USDC", ["swapscold"]),
+    "USDC/USD": {
+        "account": "oracles",
+        "index": 5,
+        "name": `USDC/USD`,
+        "description": `Tracks 10 min average price of the USDC/USD pair`,
+        "aggregate_function": "mean_median",
+        "data_type": "double",
+        "config": [
+                { "key": "data_window_size", "value": 1 },
+                { "key": "min_provider_wait_sec", "value": 60 },
+                { "key": "data_same_provider_limit", "value": 1 }
+        ],
+        "providers": ["swapscold"]
+    },
     "MTL/USD" : lendOracleFormat(6, "MTL"),
     "ETH/USD" : lendOracleFormat(7, "ETH"),
     "DOGE/USD": lendOracleFormat(8, "DOGE"),
@@ -58,5 +71,6 @@ export const oracles: { [key: string]: Oracle } = {
     "BUSD/USD": lendOracleFormat(13, "BUSD"),
     "PAX/USD" : lendOracleFormat(14, "PAX"),
     "TUSD/USD": lendOracleFormat(15, "TUSD"),
+    "LTC/USD": lendOracleFormat(16, "LTC"),
 }
 
