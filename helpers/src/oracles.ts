@@ -73,5 +73,6 @@ export const oracles: { [key: string]: Oracle } = {
     "TUSD/USD": lendOracleFormat(15, "TUSD"),
     "LTC/USD": lendOracleFormat(16, "LTC"),
     "PYUSD/USD": lendOracleFormat(17, "PYUSD"),
+    "XRP/USD": lendOracleFormat(18, "XRP"),
 }
 
